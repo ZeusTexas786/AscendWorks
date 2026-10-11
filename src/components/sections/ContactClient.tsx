@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { submitContactForm, CONTACT_EMAIL } from "@/lib/contact";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -23,9 +24,9 @@ import {
 // ─── static data ───────────────────────────────────────────────────────────
 
 const trustSignals = [
-  "ServiceNow Build Partner",
+  "ServiceNow-focused advisory and delivery",
   "SOC 2 Type II Certified",
-  "6-week deployment guarantee",
+  "Scope and success criteria agreed up front",
   "Response within 1 business day",
 ];
 
@@ -74,7 +75,7 @@ const offices = [
 // ─── field helpers ──────────────────────────────────────────────────────────
 
 const inputCls =
-  "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors";
+  "glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors";
 
 const labelCls = "text-slate-light text-xs font-semibold uppercase tracking-wider";
 
@@ -96,11 +97,21 @@ export default function ContactClient() {
   const [intent, setIntent] = useState<"discovery" | "expert">(initial);
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<{ message: string; mailto: string } | null>(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
     setSending(true);
-    setTimeout(() => { setSending(false); setSubmitted(true); }, 1500);
+    setError(null);
+    const result = await submitContactForm(form);
+    setSending(false);
+    if (result.ok) {
+      setSubmitted(true);
+      form.reset();
+    } else {
+      setError({ message: result.error, mailto: result.mailto });
+    }
   }
 
   const steps = intent === "discovery" ? discoverySteps : expertSteps;
@@ -141,7 +152,7 @@ export default function ContactClient() {
             </p>
 
             {/* Intent toggle */}
-            <div className="mt-8 inline-flex items-center gap-1 rounded-2xl border border-white/10 bg-white/5 p-1">
+            <div className="glass-inset mt-8 inline-flex items-center gap-1 rounded-2xl p-1">
               {(["discovery", "expert"] as const).map((v) => (
                 <button
                   key={v}
@@ -317,6 +328,15 @@ export default function ContactClient() {
                     >
                       {/* Hidden intent field */}
                       <input type="hidden" name="intent" value={intent} />
+                      {/* Honeypot: hidden from people, irresistible to bots. */}
+                      <input
+                        type="text"
+                        name="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                      />
 
                       <div className="grid grid-cols-2 gap-4">
                         <Field label="First Name *">
@@ -403,6 +423,18 @@ export default function ContactClient() {
                         />
                       </Field>
 
+                      {error && (
+                        <div role="alert" className="glass-inset rounded-xl px-4 py-3 text-sm text-slate-light">
+                          <p>{error.message}</p>
+                          <a
+                            href={error.mailto}
+                            className="mt-1 inline-block font-semibold text-gold hover:text-gold-light"
+                          >
+                            Email {CONTACT_EMAIL} instead &rarr;
+                          </a>
+                        </div>
+                      )}
+
                       <button
                         type="submit"
                         disabled={sending}
@@ -439,7 +471,7 @@ export default function ContactClient() {
             </div>
             <div className="flex flex-wrap gap-4">
               {offices.map((o) => (
-                <div key={o.city} className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/4 px-5 py-3">
+                <div key={o.city} className="glass flex items-center gap-3 rounded-2xl px-5 py-3">
                   <MapPin size={15} className="shrink-0 text-gold" weight="fill" />
                   <div>
                     <p className="text-sm font-semibold text-white">{o.city}</p>

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { LinkedinLogo, TwitterLogo, YoutubeLogo, Envelope, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
 
 const services = [
+  { label: "AI Control Tower", href: "/solutions/ai-control-tower" },
+  { label: "AscendOS Platform", href: "/platform" },
   { label: "ServiceNow Implementation", href: "/services/servicenow" },
   { label: "Agentic AI & Automation", href: "/services/agentic-ai" },
   { label: "ITSM Optimization", href: "/services/itsm" },
@@ -13,10 +15,20 @@ const services = [
 const industries = [
   { label: "Healthcare", href: "/industries/healthcare" },
   { label: "Financial Services", href: "/industries/financial" },
-  { label: "Manufacturing", href: "/industries/manufacturing" },
-  { label: "Government", href: "/industries/government" },
   { label: "Energy & Utilities", href: "/industries/energy" },
   { label: "Technology & Media", href: "/industries/technology" },
+];
+
+// Social profiles. An entry renders ONLY once it has a real URL — an icon
+// pointing at "#" is a dead end for the visitor and a dead link for crawlers,
+// which is worse than not showing the icon at all. Paste the URL in and the
+// icon reappears automatically; no other change needed.
+const socials = [
+  // Public company-page URL. NOT the /admin/dashboard/ link — that one only
+  // resolves for page administrators and errors out for ordinary visitors.
+  { Icon: LinkedinLogo, label: "LinkedIn",  href: "https://www.linkedin.com/company/112722365/" },
+  { Icon: TwitterLogo,  label: "Twitter/X", href: "https://x.com/TechPeople786" },
+  { Icon: YoutubeLogo,  label: "YouTube",   href: "" },
 ];
 
 const company = [
@@ -71,15 +83,13 @@ export default function Footer() {
             </div>
 
             <div className="flex gap-3">
-              {[
-                { Icon: LinkedinLogo, label: "LinkedIn", href: "#" },
-                { Icon: TwitterLogo, label: "Twitter/X", href: "#" },
-                { Icon: YoutubeLogo, label: "YouTube", href: "#" },
-              ].map(({ Icon, label, href }) => (
+              {socials.filter((s) => s.href).map(({ Icon, label, href }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-slate hover:text-white hover:border-gold/40 hover:bg-gold/5 transition-all"
                 >
                   <Icon size={15} weight="fill" />
@@ -128,7 +138,11 @@ export default function Footer() {
             </ul>
 
             <div className="mt-8 flex flex-col gap-2">
-              {["SOC 2 Type II", "ISO 27001", "HIPAA Compliant", "FedRAMP Ready"].map((badge) => (
+              {/* Only credentials AWN actually holds. "ISO 27001", "HIPAA Compliant"
+                  and "FedRAMP Ready" were removed 2026-08-10: the rest of the site
+                  says "experienced" with those frameworks, and "compliant"/"ready"
+                  is a materially stronger claim than experience. */}
+              {["SOC 2 Type II"].map((badge) => (
                 <span
                   key={badge}
                   className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 text-slate text-xs"
@@ -146,9 +160,13 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-slate/60 text-xs">© 2026 AscendWorksNow Inc. All rights reserved.</p>
           <div className="flex gap-6">
-            {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) => (
-              <Link key={item} href="#" className="text-slate/60 hover:text-slate text-xs transition-colors">
-                {item}
+            {[
+              { label: "Privacy Policy", href: "/privacy" },
+              { label: "Terms of Service", href: "/terms" },
+              { label: "Cookie Policy", href: "/cookies" },
+            ].map((item) => (
+              <Link key={item.href} href={item.href} className="text-slate/60 hover:text-slate text-xs transition-colors">
+                {item.label}
               </Link>
             ))}
           </div>

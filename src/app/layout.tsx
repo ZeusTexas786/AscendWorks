@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Sora, DM_Sans } from "next/font/google";
 import "./globals.css";
-import Knowledge26Widget from "@/components/widgets/Knowledge26Widget";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -20,21 +19,25 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: "AscendWorksNow | ServiceNow Implementation & Enterprise IT Transformation",
   description:
-    "AscendWorksNow helps enterprise IT leaders transform their organizations through ServiceNow implementation, Agentic AI, and strategic consulting. Deployed in 6 weeks. Results that last.",
+    "AscendWorksNow advises enterprise teams on ServiceNow implementation, platform strategy, Flow Designer, AI Control Tower, Now Assist, and employee experience.",
   keywords: [
     "ServiceNow implementation",
     "enterprise IT consulting",
-    "ServiceNow partner",
     "IT transformation",
     "Agentic AI",
     "ITSM",
+    "Flow Designer",
+    "ServiceNow Otto",
+    "Moveworks",
+    "AI Control Tower",
+    "Now Assist",
     "AscendWorksNow",
   ],
   metadataBase: new URL("https://www.ascendworksnow.com"),
   openGraph: {
     title: "AscendWorksNow | ServiceNow & Enterprise IT Transformation",
     description:
-      "From cost center to innovation engine. AscendWorksNow delivers ServiceNow implementations that transform how enterprise IT operates.",
+      "ServiceNow strategy and delivery across platform implementation, Flow Designer, AI Control Tower, Now Assist, and employee experience.",
     siteName: "AscendWorksNow",
     url: "https://www.ascendworksnow.com",
     type: "website",
@@ -53,7 +56,6 @@ export default function RootLayout({
     <html lang="en" className={`${sora.variable} ${dmSans.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
         {children}
-        <Knowledge26Widget />
       </body>
     </html>
   );

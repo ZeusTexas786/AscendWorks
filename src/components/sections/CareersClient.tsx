@@ -1,5 +1,6 @@
 "use client";
 
+import { submitContactForm, CONTACT_EMAIL } from "@/lib/contact";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -315,11 +316,22 @@ const urgencyConfig = {
 function ApplyForm({ job }: { job: Job }) {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState<{ message: string; mailto: string } | null>(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
     setSending(true);
-    setTimeout(() => { setSending(false); setSubmitted(true); }, 1200);
+    setError(null);
+    const result = await submitContactForm(form);
+    setSending(false);
+    if (result.ok) {
+      setSubmitted(true);
+      form.reset();
+    } else {
+      // Never show "Application Received" when nothing was sent.
+      setError({ message: result.error, mailto: result.mailto });
+    }
   }
 
   if (submitted) {
@@ -342,43 +354,54 @@ function ApplyForm({ job }: { job: Job }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="relative flex flex-col gap-4">
+      <input type="hidden" name="intent" value="application" />
+      <input type="hidden" name="role" value={job.title} />
+      {/* Honeypot: hidden from people, irresistible to bots. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+      />
       <div className="flex flex-col gap-1.5">
         <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Full Name *</label>
         <div className="relative">
           <UserCircle size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate" />
-          <input required type="text" placeholder="Jane Smith"
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
+          <input required type="text" name="fullName" autoComplete="name" placeholder="Jane Smith"
+            className="glass-inset w-full rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Email Address *</label>
         <div className="relative">
           <EnvelopeSimple size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate" />
-          <input required type="email" placeholder="jane@example.com"
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
+          <input required type="email" name="email" autoComplete="email" placeholder="jane@example.com"
+            className="glass-inset w-full rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Phone Number</label>
         <div className="relative">
           <Phone size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate" />
-          <input type="tel" placeholder="+1 (555) 000-0000"
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
+          <input type="tel" name="phone" autoComplete="tel" placeholder="+1 (555) 000-0000"
+            className="glass-inset w-full rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-slate-light text-xs font-600 uppercase tracking-wider">LinkedIn Profile</label>
         <div className="relative">
           <ArrowUpRight size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate" />
-          <input type="url" placeholder="linkedin.com/in/yourprofile"
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
+          <input type="url" name="linkedin" placeholder="linkedin.com/in/yourprofile"
+            className="glass-inset w-full rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Years of Experience *</label>
-        <select required
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-gold/50 transition-colors appearance-none">
+        <select required name="timeline" aria-label="Years of experience"
+          className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-gold/50 transition-colors appearance-none">
           <option value="" className="bg-navy text-slate">Select range</option>
           <option value="5-10" className="bg-navy">5–10 years</option>
           <option value="10-15" className="bg-navy">10–15 years</option>
@@ -390,23 +413,32 @@ function ApplyForm({ job }: { job: Job }) {
         <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Relevant Certifications</label>
         <div className="relative">
           <Certificate size={15} className="absolute left-3 top-3.5 text-slate" />
-          <textarea rows={2} placeholder="e.g. CIS-ITSM, CIS-FSM, ITIL v4..."
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors resize-none" />
+          <textarea rows={2} name="certs" placeholder="e.g. CIS-ITSM, CIS-FSM, ITIL v4..."
+            className="glass-inset w-full rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors resize-none" />
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Resume / Portfolio Link</label>
         <div className="relative">
           <FileText size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate" />
-          <input type="url" placeholder="Google Drive, Dropbox, or portfolio URL"
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
+          <input type="url" name="resume" placeholder="Google Drive, Dropbox, or portfolio URL"
+            className="glass-inset w-full rounded-xl pl-9 pr-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors" />
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Brief Message</label>
-        <textarea rows={3} placeholder="Tell us why this role is a fit — specific experience, availability, rate expectations..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors resize-none" />
+        <textarea rows={3} name="message" placeholder="Tell us why this role is a fit — specific experience, availability, rate expectations..."
+          className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/60 focus:outline-none focus:border-gold/50 transition-colors resize-none" />
       </div>
+      {error && (
+        <div role="alert" className="glass-inset rounded-xl px-4 py-3 text-sm text-slate-light">
+          <p>{error.message}</p>
+          <a href={error.mailto} className="mt-1 inline-block font-600 text-gold hover:text-gold-light">
+            Email {CONTACT_EMAIL} instead &rarr;
+          </a>
+        </div>
+      )}
+
       <button type="submit" disabled={sending}
         className="group flex items-center justify-center gap-2 w-full py-4 bg-gold text-navy font-display font-700 text-sm rounded-xl hover:bg-amber-400 transition-all disabled:opacity-60 mt-1">
         {sending ? (
@@ -466,12 +498,12 @@ function JobRow({ job, active, onClick }: { job: Job; active: boolean; onClick: 
       </div>
       <div className="flex flex-wrap gap-1.5 mt-3">
         {job.skills.slice(0, 4).map((s) => (
-          <span key={s} className="text-[10px] px-2 py-0.5 rounded-md bg-white/5 text-slate border border-white/8">
+          <span key={s} className="glass-inset text-[10px] px-2 py-0.5 rounded-md text-slate">
             {s}
           </span>
         ))}
         {job.skills.length > 4 && (
-          <span className="text-[10px] px-2 py-0.5 rounded-md bg-white/5 text-slate border border-white/8">
+          <span className="glass-inset text-[10px] px-2 py-0.5 rounded-md text-slate">
             +{job.skills.length - 4}
           </span>
         )}
@@ -547,7 +579,7 @@ function JobDetail({ job }: { job: Job }) {
         {/* Job description */}
         <div className="lg:col-span-3 space-y-6">
           {/* Summary */}
-          <div className="rounded-2xl border border-white/8 bg-navy-light p-6">
+          <div className="glass rounded-2xl p-6">
             <h3 className="font-display font-700 text-white text-base mb-3 flex items-center gap-2">
               <Star size={15} weight="fill" className="text-gold" />
               The Role
@@ -556,7 +588,7 @@ function JobDetail({ job }: { job: Job }) {
           </div>
 
           {/* Responsibilities */}
-          <div className="rounded-2xl border border-white/8 bg-navy-light p-6">
+          <div className="glass rounded-2xl p-6">
             <h3 className="font-display font-700 text-white text-base mb-4 flex items-center gap-2">
               <Lightning size={15} weight="fill" className="text-teal" />
               What You&apos;ll Do
@@ -572,7 +604,7 @@ function JobDetail({ job }: { job: Job }) {
           </div>
 
           {/* Requirements */}
-          <div className="rounded-2xl border border-white/8 bg-navy-light p-6">
+          <div className="glass rounded-2xl p-6">
             <h3 className="font-display font-700 text-white text-base mb-4 flex items-center gap-2">
               <SealCheck size={15} weight="fill" className={job.accentColor} />
               What We Need
@@ -588,7 +620,7 @@ function JobDetail({ job }: { job: Job }) {
           </div>
 
           {/* Certifications */}
-          <div className="rounded-2xl border border-white/8 bg-navy-light p-6">
+          <div className="glass rounded-2xl p-6">
             <h3 className="font-display font-700 text-white text-base mb-4 flex items-center gap-2">
               <Certificate size={15} weight="fill" className="text-gold" />
               Certifications
@@ -607,7 +639,7 @@ function JobDetail({ job }: { job: Job }) {
         {/* Sticky apply form */}
         <div className="lg:col-span-2">
           <div className="sticky top-24">
-            <div className="rounded-2xl border border-gold/20 bg-navy-light overflow-hidden">
+            <div className="glass rounded-2xl overflow-hidden [--glass-edge:rgba(201,168,76,0.32)]">
               <div className="bg-gradient-to-r from-gold/10 to-transparent px-6 pt-6 pb-4 border-b border-white/8">
                 <h3 className="font-display font-700 text-white text-base mb-0.5">Apply Now</h3>
                 <p className="text-slate text-xs">Our talent team responds within 48 hours</p>
@@ -618,7 +650,7 @@ function JobDetail({ job }: { job: Job }) {
             </div>
 
             {/* Quick contact */}
-            <div className="mt-4 rounded-2xl border border-white/8 bg-navy-light p-5">
+            <div className="glass mt-4 rounded-2xl p-5">
               <p className="text-white font-600 text-sm mb-1">Have a quick question?</p>
               <p className="text-slate text-xs mb-4 leading-relaxed">
                 Reach our talent team directly before applying.
@@ -855,7 +887,7 @@ export default function CareersClient() {
                 <MagnifyingGlass size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-navy/40" />
                 <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search by title or skill…"
-                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-navy/15 bg-white text-navy text-sm placeholder:text-navy/35 focus:outline-none focus:border-gold/50 transition-colors shadow-sm" />
+                  className="glass-inset-light w-full pl-9 pr-4 py-2.5 rounded-xl text-navy text-sm placeholder:text-navy/35 focus:outline-none focus:border-gold/50 transition-colors" />
               </div>
               {/* Area filter */}
               <div className="flex items-center gap-2 flex-wrap">
@@ -917,7 +949,7 @@ export default function CareersClient() {
                     <motion.div key="placeholder"
                       initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }} transition={{ duration: 0.25 }}
-                      className="hidden lg:flex flex-col items-center justify-center min-h-[480px] rounded-3xl border border-navy/10 bg-white text-center p-12">
+                      className="glass-light hidden lg:flex flex-col items-center justify-center min-h-[480px] rounded-3xl text-center p-12">
                       <div className="w-16 h-16 rounded-2xl bg-navy/5 flex items-center justify-center mb-5">
                         <Briefcase size={28} weight="duotone" className="text-navy/30" />
                       </div>
@@ -968,7 +1000,7 @@ export default function CareersClient() {
                   body: "Most of our contractors come back. We get to know your work and match you to roles where you'll thrive.",
                 },
               ].map(({ icon: Icon, color, bg, title, body }) => (
-                <div key={title} className="flex flex-col gap-4 p-6 rounded-2xl border border-white/8 bg-navy-light">
+                <div key={title} className="glass flex flex-col gap-4 p-6 rounded-2xl">
                   <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center`}>
                     <Icon size={20} weight="fill" className={color} />
                   </div>

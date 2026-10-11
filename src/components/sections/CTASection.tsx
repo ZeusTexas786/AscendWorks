@@ -2,12 +2,13 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import { submitContactForm, CONTACT_EMAIL } from "@/lib/contact";
 import { ArrowRight, CheckCircle, SealCheck, ArrowsClockwise, ShieldCheck } from "@phosphor-icons/react";
 
 const trustSignals = [
-  "ServiceNow Build Partner",
+  "ServiceNow-focused advisory and delivery",
   "SOC 2 Type II Certified",
-  "6-week deployment guarantee",
+  "Scope and success criteria agreed up front",
   "Response within 1 business day",
 ];
 
@@ -16,11 +17,21 @@ export default function CTASection() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<{ message: string; mailto: string } | null>(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
     setSending(true);
-    setTimeout(() => { setSending(false); setSubmitted(true); }, 1400);
+    setError(null);
+    const result = await submitContactForm(form);
+    setSending(false);
+    if (result.ok) {
+      setSubmitted(true);
+      form.reset();
+    } else {
+      setError({ message: result.error, mailto: result.mailto });
+    }
   }
 
   return (
@@ -30,7 +41,7 @@ export default function CTASection() {
           initial={{ opacity: 0, y: 32 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65 }}
-          className="relative rounded-3xl overflow-hidden bg-navy mesh-bg"
+          className="relative rounded-3xl overflow-hidden bg-navy mesh-bg border border-white/15 shadow-[0_24px_70px_rgba(10,22,40,0.28),inset_0_1px_0_rgba(255,255,255,0.16)]"
         >
           {/* Background glows */}
           <div className="absolute inset-0 pointer-events-none">
@@ -101,44 +112,53 @@ export default function CTASection() {
                   </button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <form onSubmit={handleSubmit} className="relative flex flex-col gap-4">
+                  {/* Honeypot: hidden from people, irresistible to bots. */}
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                  />
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-slate-light text-xs font-600 uppercase tracking-wider">First Name *</label>
-                      <input required type="text" placeholder="Jane"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
+                      <input required type="text" name="firstName" autoComplete="given-name" placeholder="Jane"
+                        className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Last Name *</label>
-                      <input required type="text" placeholder="Smith"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
+                      <input required type="text" name="lastName" autoComplete="family-name" placeholder="Smith"
+                        className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-1.5">
                     <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Work Email *</label>
-                    <input required type="email" placeholder="jane@enterprise.com"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
+                    <input required type="email" name="email" autoComplete="email" placeholder="jane@enterprise.com"
+                      className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Company *</label>
-                      <input required type="text" placeholder="Acme Corp"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
+                      <input required type="text" name="company" autoComplete="organization" placeholder="Acme Corp"
+                        className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Job Title</label>
-                      <input type="text" placeholder="CIO"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
+                      <input type="text" name="title" autoComplete="organization-title" placeholder="CIO"
+                        className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Industry *</label>
-                      <select required title="Industry" aria-label="Industry"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-gold/50 transition-colors appearance-none">
+                      <select required name="industry" title="Industry" aria-label="Industry"
+                        className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-gold/50 transition-colors appearance-none">
                         <option value="" className="bg-navy text-slate">Select industry</option>
                         <option value="energy" className="bg-navy">Oil &amp; Gas / Energy</option>
                         <option value="banking" className="bg-navy">Banking &amp; Financial Services</option>
@@ -152,8 +172,8 @@ export default function CTASection() {
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Project Scope *</label>
-                      <select required title="Project Scope" aria-label="Project Scope"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-gold/50 transition-colors appearance-none">
+                      <select required name="scope" title="Project Scope" aria-label="Project Scope"
+                        className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-gold/50 transition-colors appearance-none">
                         <option value="" className="bg-navy text-slate">Select scope</option>
                         <option value="pilot" className="bg-navy">Pilot / Proof of Concept</option>
                         <option value="department" className="bg-navy">Department-Level</option>
@@ -165,15 +185,24 @@ export default function CTASection() {
 
                   <div className="flex flex-col gap-1.5">
                     <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Phone</label>
-                    <input type="tel" placeholder="+1 (555) 000-0000"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
+                    <input type="tel" name="phone" autoComplete="tel" placeholder="+1 (555) 000-0000"
+                      className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors" />
                   </div>
 
                   <div className="flex flex-col gap-1.5">
                     <label className="text-slate-light text-xs font-600 uppercase tracking-wider">Tell Us About Your Challenge *</label>
-                    <textarea required rows={3} placeholder="What's the problem you're trying to solve? Be as specific as you'd like."
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors resize-none" />
+                    <textarea required name="message" rows={3} placeholder="What's the problem you're trying to solve? Be as specific as you'd like."
+                      className="glass-inset w-full rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate/50 focus:outline-none focus:border-gold/50 transition-colors resize-none" />
                   </div>
+
+                  {error && (
+                    <div role="alert" className="glass-inset rounded-xl px-4 py-3 text-sm text-slate-light">
+                      <p>{error.message}</p>
+                      <a href={error.mailto} className="mt-1 inline-block font-600 text-gold hover:text-gold-light">
+                        Email {CONTACT_EMAIL} instead &rarr;
+                      </a>
+                    </div>
+                  )}
 
                   <button type="submit" disabled={sending}
                     className="group flex items-center justify-center gap-2 w-full py-4 bg-gold text-navy font-display font-700 text-base rounded-xl hover:bg-amber-400 transition-all shadow-xl shadow-gold/20 disabled:opacity-60 mt-1">

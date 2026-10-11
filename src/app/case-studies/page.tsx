@@ -1,191 +1,42 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, Check } from "@phosphor-icons/react/dist/ssr";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import OilGasCaseStudySection from "@/components/sections/OilGasCaseStudySection";
 
 export const metadata: Metadata = {
-  title: "Case Studies | AscendWorksNow",
+  title: "Client Outcomes | AscendWorksNow",
   description:
-    "Explore ServiceNow case studies for Oil & Gas, Healthcare, Banking, and Logistics, including AI Control Tower deployment for BFSI and industry-specific operational outcomes.",
+    "See how AscendWorks approaches ServiceNow delivery, and contact our team to discuss the platform outcomes your organization needs.",
 };
 
-const caseStudies = [
-  {
-    id: "oil-gas",
-    industry: "Oil & Gas",
-    title: "Operational reliability and safety visibility for a global energy operator.",
-    image: "/assets/case-studies/oil-gas.jpg",
-    alt: "Oil and gas production facility operations",
-    summary:
-      "We unified EHS, asset health, field service, and compliance workflows on ServiceNow so the operator could manage incidents, maintenance, and safety from one platform.",
-    impact: [
-      "25% reduction in unplanned equipment downtime",
-      "4x faster safety notification and incident response",
-      "14 offshore and onshore sites on one asset management platform",
-    ],
-    modules: [
-      "Asset Management",
-      "Field Service Management",
-      "Environmental Health & Safety",
-      "ITOM",
-      "Operational Technology Management",
-    ],
-    outcome:
-      "A single live model of production assets and safety processes reduced site risk and created a scalable control plane for operations and incident response.",
-  },
-  {
-    id: "healthcare",
-    industry: "Healthcare & Life Sciences",
-    title: "Clinical IT operations and device governance for a regional health system.",
-    image: "/assets/case-studies/healthcare-ls.jpg",
-    alt: "Healthcare team reviewing clinical IT service status",
-    summary:
-      "ServiceNow delivered a clinical operations platform that combined device management, ITSM, and patient-facing service requests so care teams spend less time waiting for technology support.",
-    impact: [
-      "48% faster incident resolution for clinical systems",
-      "100+ connected clinical and imaging devices monitored",
-      "6-month adoption across IT and clinical service teams",
-    ],
-    modules: [
-      "HealthCare and Life Sciences",
-      "Clinical Device Management",
-      "IT Service Management",
-      "Service Catalog",
-      "HR Service Delivery",
-    ],
-    outcome:
-      "The health system reduced clinical downtime and delivered a consistent, auditable service experience for patients and staff.",
-  },
-  {
-    id: "banking",
-    industry: "Banking & Financial Services",
-    title: "ServiceNow AI Control Tower for predictive risk and regulator-ready operations.",
-    image: "/assets/case-studies/bfsi-control-tower.jpg",
-    alt: "Bank trading floor with AI dashboard overlay",
-    summary:
-      "We built an AI Control Tower on ServiceNow that links incident risk, change exposure, compliance controls, and model drift monitoring into one operational command center.",
-    impact: [
-      "66% reduction in manual triage and ticket escalation",
-      "90% faster production-ready regulator reporting",
-      "12 real-time dashboards for business, risk, and IT leaders",
-    ],
-    modules: [
-      "AI Control Tower",
-      "Governance, Risk, and Compliance (GRC)",
-      "IT Risk Management",
-      "Change Management",
-      "Security Operations",
-    ],
-    outcome:
-      "The bank gained a joint view of operational resilience and compliance, making it possible to act on high-risk conditions before they became service disruptions.",
-  },
-  {
-    id: "logistics",
-    industry: "Logistics",
-    title: "Supply chain exception control and delivery recovery for a global network.",
-    image: "/assets/case-studies/logistics.jpg",
-    alt: "Logistics warehouse and transport management dashboard",
-    summary:
-      "ServiceNow connected order management, field service dispatch, and exception workflows so the logistics network could resolve delivery disruptions 40% faster.",
-    impact: [
-      "72% fewer fulfillment exceptions",
-      "40% faster recovery for delayed or damaged shipments",
-      "1,200+ automation workflows across warehouse and transport operations",
-    ],
-    modules: [
-      "Customer Service Management",
-      "Field Service Management",
-      "Order Management",
-      "IntegrationHub",
-      "IT Operations Management",
-    ],
-    outcome:
-      "The network moved from reactive firefighting to proactive supply chain control, with service-level visibility across warehouse, transport, and customer operations.",
-  },
+const evidence = [
+  { title: "The work", description: "The business and platform context, scope, modules, and integrations involved." },
+  { title: "The measure", description: "A stated baseline, measurement period, and method—not an unattributed percentage." },
+  { title: "The permission", description: "Customer approval for the story, its details, and any identifying information." },
 ];
-
-function SectionCard({ study, reverse }: { study: typeof caseStudies[number]; reverse?: boolean }) {
-  return (
-    <section className={`grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center ${reverse ? "lg:grid-flow-dense" : ""}`}>
-      <div className={reverse ? "lg:col-start-2" : ""}>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-[32px] border border-white/10 bg-navy-light shadow-[0_26px_70px_rgba(9,15,82,0.18)]">
-          <Image
-            src={study.image}
-            alt={study.alt}
-            fill
-            sizes="(min-width: 1024px) 480px, 100vw"
-            className="object-cover"
-          />
-        </div>
-      </div>
-      <div className="space-y-6 lg:pr-6">
-        <span className="inline-flex items-center rounded-full border border-gold/20 bg-gold/10 px-3 py-1 text-[11px] font-600 uppercase tracking-[0.16em] text-gold">
-          {study.industry}
-        </span>
-        <h2 className="text-3xl md:text-4xl font-display font-800 text-white leading-tight">
-          {study.title}
-        </h2>
-        <p className="text-slate-light leading-8 text-base">{study.summary}</p>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {study.impact.map((item) => (
-            <div key={item} className="rounded-3xl border border-white/10 bg-white/5 p-5">
-              <p className="font-display font-700 text-lg text-white leading-snug">{item}</p>
-            </div>
-          ))}
-        </div>
-        <div className="rounded-3xl border border-white/10 bg-navy-light p-5">
-          <p className="text-slate text-sm leading-relaxed mb-4">Relevant ServiceNow modules used in this deployment.</p>
-          <div className="flex flex-wrap gap-3">
-            {study.modules.map((module) => (
-              <span key={module} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[13px] font-medium text-slate-light">
-                {module}
-              </span>
-            ))}
-          </div>
-        </div>
-        <p className="text-slate text-sm leading-relaxed">{study.outcome}</p>
-      </div>
-    </section>
-  );
-}
 
 export default function CaseStudiesPage() {
   return (
     <>
       <Navbar />
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-navy py-24 lg:py-32">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -top-20 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-gold/10 blur-[140px]" />
-            <div className="absolute bottom-0 right-0 h-[420px] w-[420px] rounded-full bg-teal/10 blur-[120px]" />
-          </div>
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+        <section className="bg-navy pt-32 pb-20 lg:pt-40 lg:pb-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="max-w-3xl">
-              <span className="inline-flex items-center rounded-full border border-gold/20 bg-gold/10 px-3 py-1 text-[11px] font-600 uppercase tracking-[0.18em] text-gold">
-                Case Studies
-              </span>
-              <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl font-display font-800 text-white leading-tight">
-                Industry case studies built around ServiceNow outcomes.
+              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-gold">Client outcomes</p>
+              <h1 className="font-display text-4xl font-800 leading-tight tracking-tight text-white md:text-6xl">
+                Evidence matters more than a headline metric.
               </h1>
-              <p className="mt-6 text-lg leading-8 text-slate-light max-w-2xl">
-                Explore proven ServiceNow programs in Oil & Gas, Healthcare & Life Sciences, Banking, and Logistics. The banking case study centers on AI Control Tower deployment for BFSI; the others lean on the highest-value ServiceNow modules for their industry today.
+              <p className="mt-6 max-w-2xl text-base leading-8 text-slate-light md:text-lg">
+                We are preparing client stories that can be discussed with the right context: the work delivered, how outcomes were measured, and what the customer has approved us to share.
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-navy transition hover:bg-gold-light"
-                >
-                  Talk to an Expert
-                  <ArrowRight size={16} weight="bold" />
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/contact" className="group inline-flex min-h-11 items-center gap-2 rounded-md bg-gold px-5 py-3 text-sm font-semibold text-navy transition-colors hover:bg-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-gold">
+                  Discuss your ServiceNow goals <ArrowRight size={15} weight="bold" className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                 </Link>
-                <Link
-                  href="/services"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:border-gold/30 hover:bg-white/5"
-                >
-                  See our Services
+                <Link href="/services" className="inline-flex min-h-11 items-center rounded-md border border-white/25 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white">
+                  Explore services
                 </Link>
               </div>
             </div>
@@ -193,43 +44,27 @@ export default function CaseStudiesPage() {
         </section>
 
         <section className="section-light py-20 lg:py-28">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid gap-6 lg:grid-cols-2">
-              {caseStudies.map((study, index) => (
-                <Link
-                  key={study.id}
-                  href={`#${study.id}`}
-                  className="group overflow-hidden rounded-[32px] border border-navy-light bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition hover:-translate-y-1 hover:shadow-2xl"
-                >
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-gold mb-3">{study.industry}</p>
-                  <h2 className="text-2xl font-display font-800 text-navy leading-tight mb-3">{study.title}</h2>
-                  <p className="text-slate-600 leading-7 mb-5">{study.summary}</p>
-                  <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                    {study.modules.slice(0, 3).map((module) => (
-                      <span key={module} className="rounded-full border border-slate-200 px-3 py-1 bg-slate-50">{module}</span>
-                    ))}
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="max-w-2xl">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-navy/60">How we report results</p>
+              <h2 className="font-display text-3xl font-800 leading-tight text-navy md:text-4xl">A useful case study shows its working.</h2>
+              <p className="mt-4 text-base leading-7 text-navy/65">When we publish customer outcomes, they should give a platform owner enough information to judge whether the work is relevant to their own estate.</p>
+            </div>
+
+            <div className="mt-10 grid gap-5 md:grid-cols-3">
+              {evidence.map((item, index) => (
+                <article key={item.title} className="border-t border-navy/15 bg-white p-6 sm:p-7">
+                  <div className="mb-8 flex h-10 w-10 items-center justify-center rounded-lg border border-navy/10 text-navy/70">
+                    <Check size={18} weight="regular" aria-hidden="true" />
                   </div>
-                  <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-gold group-hover:text-gold-600">
-                    <span>Read the story</span>
-                    <ArrowRight size={14} weight="bold" />
-                  </div>
-                </Link>
+                  <p className="mb-2 font-mono text-xs tabular-nums text-gold">0{index + 1}</p>
+                  <h3 className="font-display text-lg font-700 text-navy">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-navy/65">{item.description}</p>
+                </article>
               ))}
             </div>
           </div>
         </section>
-
-        <section className="section-dark py-20 lg:py-28">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-24">
-            {caseStudies.map((study, index) => (
-              <div key={study.id} id={study.id} className="scroll-mt-24">
-                <SectionCard study={study} reverse={index % 2 === 1} />
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <OilGasCaseStudySection />
       </main>
       <Footer />
     </>

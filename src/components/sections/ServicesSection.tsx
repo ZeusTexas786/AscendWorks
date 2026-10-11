@@ -19,10 +19,10 @@ const services = [
     title: "ServiceNow Implementation",
     tag: "Core Platform",
     description:
-      "Full-lifecycle deployments — from discovery to go-live in 6 weeks. ITSM, ITOM, HRSD, CSM, and SecOps modules handled by certified architects.",
-    metrics: "Avg. 6-week deployment · 30% under-budget delivery",
+      "Plan and deliver ServiceNow capabilities around your operating model—from process design and configuration through testing, launch, and adoption.",
+    focus: "ITSM · ITOM · HRSD · CSM · SecOps",
     color: "from-gold/20 to-transparent",
-    borderColor: "border-gold/20 hover:border-gold/50",
+    fringe: "[--lg-fringe-a:rgba(201,168,76,0.70)] [--lg-fringe-b:rgba(226,192,108,0.45)]",
     iconBg: "bg-gold/10",
     iconColor: "text-gold",
     href: "/services/servicenow",
@@ -32,10 +32,10 @@ const services = [
     title: "Agentic AI & Automation",
     tag: "AI-First",
     description:
-      "Deploy AI agents that handle L1/L2 tickets, auto-route incidents, and trigger remediation — without a human in the loop.",
-    metrics: "60% ticket deflection · 24/7 autonomous resolution",
+      "Apply Now Assist and agentic workflows to service operations with clear permissions, human review, and escalation paths.",
+    focus: "Now Assist · AI agents · governed automation",
     color: "from-purple/20 to-transparent",
-    borderColor: "border-purple/20 hover:border-purple/50",
+    fringe: "[--lg-fringe-a:rgba(107,79,187,0.65)] [--lg-fringe-b:rgba(13,155,138,0.42)]",
     iconBg: "bg-purple/10",
     iconColor: "text-purple",
     href: "/services/agentic-ai",
@@ -45,10 +45,10 @@ const services = [
     title: "ITSM & Platform Optimization",
     tag: "Optimization",
     description:
-      "Already on ServiceNow but not seeing ROI? We audit, optimize, and unlock the capabilities your team paid for but never activated.",
-    metrics: "Avg. 40% MTTR reduction · 3× user adoption lift",
+      "Find friction in your existing instance, prioritize platform health, and improve the workflows and capabilities teams rely on.",
+    focus: "Platform health · CMDB · workflow adoption",
     color: "from-teal/20 to-transparent",
-    borderColor: "border-teal/20 hover:border-teal/50",
+    fringe: "[--lg-fringe-a:rgba(13,155,138,0.65)] [--lg-fringe-b:rgba(107,79,187,0.42)]",
     iconBg: "bg-teal/10",
     iconColor: "text-teal",
     href: "/services/itsm",
@@ -58,10 +58,10 @@ const services = [
     title: "Platform Architecture",
     tag: "Enterprise Scale",
     description:
-      "Governance frameworks, multi-instance strategies, and integration architectures designed for 10,000+ seat enterprises.",
-    metrics: "99.9% uptime SLA · Zero-downtime migrations",
+      "Set platform direction with an architecture that accounts for integrations, governance, security, upgrades, and long-term ownership.",
+    focus: "Governance · integrations · upgrade strategy",
     color: "from-gold/20 to-transparent",
-    borderColor: "border-gold/20 hover:border-gold/50",
+    fringe: "[--lg-fringe-a:rgba(201,168,76,0.70)] [--lg-fringe-b:rgba(226,192,108,0.45)]",
     iconBg: "bg-gold/10",
     iconColor: "text-gold",
     href: "/services/architecture",
@@ -71,10 +71,10 @@ const services = [
     title: "Strategic IT Advisory",
     tag: "C-Suite",
     description:
-      "Board-ready roadmaps, IT operating model redesign, and technology investment strategy. We work alongside your leadership, not below it.",
-    metrics: "CIO-to-CIO engagement model",
+      "Translate executive priorities into a practical platform roadmap, operating model, and investment sequence.",
+    focus: "Roadmaps · operating models · investment cases",
     color: "from-purple/20 to-transparent",
-    borderColor: "border-purple/20 hover:border-purple/50",
+    fringe: "[--lg-fringe-a:rgba(107,79,187,0.65)] [--lg-fringe-b:rgba(13,155,138,0.42)]",
     iconBg: "bg-purple/10",
     iconColor: "text-purple",
     href: "/services/advisory",
@@ -84,10 +84,10 @@ const services = [
     title: "Talent & Staffing",
     tag: "On-Demand",
     description:
-      "Certified ServiceNow engineers, architects, and project managers embedded in your team — available in 72 hours.",
-    metrics: "72-hour placement · 500+ vetted engineers",
+      "Add experienced ServiceNow practitioners to your delivery team, with roles and engagement shaped around the work ahead.",
+    focus: "Architects · developers · platform teams",
     color: "from-teal/20 to-transparent",
-    borderColor: "border-teal/20 hover:border-teal/50",
+    fringe: "[--lg-fringe-a:rgba(13,155,138,0.65)] [--lg-fringe-b:rgba(107,79,187,0.42)]",
     iconBg: "bg-teal/10",
     iconColor: "text-teal",
     href: "/services/staffing",
@@ -99,7 +99,7 @@ export default function ServicesSection() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="section-light py-24 lg:py-32">
+    <section ref={ref} className="section-light py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -107,25 +107,20 @@ export default function ServicesSection() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <span className="inline-block px-3 py-1 rounded-full bg-navy/8 text-navy text-xs font-600 uppercase tracking-widest mb-4">
-            What We Do
+            <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.16em] text-navy/60">
+            ServiceNow expertise
           </span>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2 className="font-display font-800 text-4xl md:text-5xl text-navy leading-tight max-w-xl">
-              Services. Built for{" "}
-              <span className="relative">
-                Enterprise Scale
-                <span className="absolute bottom-1 left-0 right-0 h-0.5 bg-gold" />
-              </span>
+              The platform work behind lasting change.
             </h2>
             <p className="text-navy/60 text-base max-w-md leading-relaxed">
-              Six integrated capabilities that cover every phase of enterprise IT
-              transformation — from strategy through sustained performance.
+              One accountable partner across strategy, delivery, integrations, and the operating model that keeps ServiceNow useful after go-live.
             </p>
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, i) => {
             const Icon = service.icon;
             return (
@@ -137,13 +132,13 @@ export default function ServicesSection() {
               >
                 <Link
                   href={service.href}
-                  className={`group flex flex-col h-full p-6 rounded-2xl border bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${service.borderColor}`}
+                  className="group flex h-full flex-col rounded-xl border border-navy/10 bg-white p-6 shadow-[0_1px_2px_rgba(10,22,40,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_12px_32px_rgba(10,22,40,0.09)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
                 >
                   <div className="flex items-start justify-between mb-5">
                     <div className={`w-12 h-12 rounded-xl ${service.iconBg} flex items-center justify-center`}>
                       <Icon size={22} weight="duotone" className={service.iconColor} />
                     </div>
-                    <span className="text-xs font-600 text-navy/40 uppercase tracking-wider pt-1">
+                    <span className="text-xs font-600 text-navy/60 uppercase tracking-wider pt-1">
                       {service.tag}
                     </span>
                   </div>
@@ -154,7 +149,7 @@ export default function ServicesSection() {
                     {service.description}
                   </p>
                   <div className="pt-4 border-t border-navy/8">
-                    <p className="text-xs text-navy/40 mb-3">{service.metrics}</p>
+                    <p className="mb-3 text-xs font-medium text-navy/55">{service.focus}</p>
                     <span className="flex items-center gap-1 text-sm font-600 text-navy group-hover:gap-2 transition-all">
                       Explore Service{" "}
                       <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />

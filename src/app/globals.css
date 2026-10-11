@@ -33,6 +33,21 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Respect the OS "reduce motion" setting site-wide. JS-driven counters are
+   additionally gated in their components — CSS alone cannot stop them. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -59,7 +74,63 @@ body {
   background-clip: text;
 }
 
-/* Mesh gradient background */
+.hero-shell {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(201, 168, 76, 0.22), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(13, 155, 138, 0.18), transparent 28%),
+    radial-gradient(circle at 70% 82%, rgba(107, 79, 187, 0.18), transparent 32%),
+    #0A1628;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
+  opacity: 0.55;
+}
+
+.hero-bloom {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(72px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.hero-bloom-one {
+  top: 12%;
+  left: 4%;
+  width: 22rem;
+  height: 22rem;
+  background: rgba(201, 168, 76, 0.12);
+}
+
+.hero-bloom-two {
+  right: 8%;
+  top: 10%;
+  width: 20rem;
+  height: 20rem;
+  background: rgba(13, 155, 138, 0.14);
+}
+
+.hero-bloom-three {
+  right: 20%;
+  bottom: 6%;
+  width: 18rem;
+  height: 18rem;
+  background: rgba(107, 79, 187, 0.18);
+}
+
+.hero-panel {
+  background:
+    linear-gradient(180deg, rgba(17,34,64,0.95), rgba(10,22,40,0.84)),
+    #0A1628;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 30px 90px rgba(3,10,22,0.52), inset 0 1px 0 rgba(255,255,255,0.14);
+}
+
 .mesh-bg {
   background:
     radial-gradient(ellipse at 20% 50%, rgba(107, 79, 187, 0.15) 0%, transparent 60%),
@@ -68,20 +139,344 @@ body {
     #0A1628;
 }
 
+/* ── Glassmorphism ──────────────────────────────────────────────────────
+   Frosted card surfaces. Two recipes, because the page alternates dark and
+   light sections and glass needs different treatment on each.
+
+   What actually sells "glass" is not the blur — it is the lit top edge
+   (the inset highlight) plus a gradient fill brighter at the top than the
+   bottom, so the pane reads as catching light from above.
+
+   backdrop-filter is GPU-expensive and forces a new stacking context, so
+   these classes are for real card surfaces only. Never put them on pills,
+   badges, or anything that repeats dozens of times in one viewport — use
+   .glass-inset for boxes nested inside a card, which skips the blur
+   entirely (blurring an already-blurred backdrop buys nothing but cost).
+*/
+
+.glass {
+  background:
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(255, 255, 255, 0.045) 42%,
+      rgba(255, 255, 255, 0.022) 100%
+    );
+  -webkit-backdrop-filter: blur(18px) saturate(155%);
+  /* Per-card accent: set --glass-edge / --glass-edge-hover on the element
+     (e.g. Tailwind's [--glass-edge:rgba(107,79,187,.35)]) to tint the rim
+     without fighting this rule's specificity. */
+  border: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.14));
+  box-shadow:
+    0 10px 34px rgba(3, 10, 22, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease,
+    background 0.35s ease;
+}
+
+/* Hoverable variant — the pane brightens and the gold edge picks up */
+.glass-hover:hover {
+  background:
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.07) 42%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+  border-color: var(--glass-edge-hover, rgba(201, 168, 76, 0.45));
+  box-shadow:
+    0 18px 46px rgba(3, 10, 22, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    0 0 0 1px rgba(201, 168, 76, 0.10);
+  transform: translateY(-3px);
+}
+
+/* Heavier pane for hero / feature surfaces that carry more weight */
+.glass-panel {
+  background:
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.055) 40%,
+      rgba(10, 22, 40, 0.30) 100%
+    );
+  -webkit-backdrop-filter: blur(26px) saturate(165%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 20px 60px rgba(3, 10, 22, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* Frosted white pane for light sections. Higher opacity than the dark
+   variant: over a pale background, translucency below ~55% loses the
+   contrast floor for body copy. */
+.glass-light {
+  background:
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.88) 0%,
+      rgba(255, 255, 255, 0.66) 55%,
+      rgba(255, 255, 255, 0.58) 100%
+    );
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.85));
+  box-shadow:
+    0 10px 34px rgba(10, 22, 40, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease,
+    background 0.35s ease;
+}
+
+.glass-light-hover:hover {
+  background:
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 255, 255, 0.82) 55%,
+      rgba(255, 255, 255, 0.74) 100%
+    );
+  border-color: var(--glass-edge-hover, rgba(201, 168, 76, 0.55));
+  box-shadow:
+    0 22px 52px rgba(10, 22, 40, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transform: translateY(-3px);
+}
+
+/* Near-opaque frosted pane for cards that sit on a DARK section but carry
+   dark body text or photography (the insight cards). Kept at ~0.94 alpha
+   deliberately: at the .glass-light opacities, navy text over a navy
+   backdrop drops below the contrast floor. The glass reads through the
+   rim, the highlight, and the shadow instead of through transparency. */
+.glass-media {
+  background:
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(255, 255, 255, 0.93) 100%
+    );
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 14px 44px rgba(3, 10, 22, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+.glass-media:hover {
+  border-color: rgba(201, 168, 76, 0.55);
+  box-shadow:
+    0 26px 64px rgba(3, 10, 22, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* ── Liquid glass ───────────────────────────────────────────────────────
+   A heavier material than .glass, used sparingly on the "What We Do"
+   service cards. Three things separate it from a flat frosted pane:
+
+   1. a bevelled rim — bright top-left, cool bottom-right — so the pane
+      reads as having real thickness rather than being a printed rectangle;
+   2. chromatic fringing on that rim, because real glass disperses light
+      into colour at its edges;
+   3. a specular highlight that tracks the pointer via --lg-x / --lg-y,
+      so the material responds to you instead of sitting inert.
+
+   Per-card fringe colours come from --lg-fringe-a / --lg-fringe-b. */
+.liquid-glass {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.70) 48%,
+      rgba(255, 255, 255, 0.62) 100%
+    );
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 18px 48px rgba(10, 22, 40, 0.12),
+    inset 1px 1px 0 rgba(255, 255, 255, 1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 12px 28px -12px rgba(255, 255, 255, 0.95),
+    inset 0 -18px 34px -22px rgba(10, 22, 40, 0.20);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+/* Refractive rim. Drawn as a gradient ring confined to the 1px border box
+   by masking out the padding box — a plain border cannot hold a gradient. */
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  padding: 1px;
+  background:
+    linear-gradient(
+      140deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      var(--lg-fringe-a, rgba(201, 168, 76, 0.55)) 26%,
+      rgba(255, 255, 255, 0.20) 50%,
+      var(--lg-fringe-b, rgba(13, 155, 138, 0.45)) 74%,
+      rgba(255, 255, 255, 0.90) 100%
+    );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.7;
+  transition: opacity 0.4s ease;
+}
+
+/* Specular highlight, positioned by the pointer handler in ServicesSection.
+   Falls back to a static top-centre sheen when JS has not run. */
+.liquid-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      240px circle at var(--lg-x, 50%) var(--lg-y, 0%),
+      rgba(255, 255, 255, 0.90) 0%,
+      rgba(255, 255, 255, 0.35) 34%,
+      transparent 68%
+    );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.liquid-glass:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    0 30px 70px rgba(10, 22, 40, 0.20),
+    inset 1px 1px 0 rgba(255, 255, 255, 1),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 14px 32px -12px rgba(255, 255, 255, 1),
+    inset 0 -20px 38px -22px rgba(10, 22, 40, 0.24);
+}
+
+.liquid-glass:hover::before { opacity: 1; }
+.liquid-glass:hover::after  { opacity: 0.95; }
+
+/* Keep card content above the rim and specular pseudo-elements. */
+.liquid-glass > * { position: relative; z-index: 1; }
+
+/* Boxes nested inside a glass card: tint and hairline only, no blur. */
+.glass-inset {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-inset-light {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(10, 22, 40, 0.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* The unprefixed property, declared separately and on purpose.
+   Lightning CSS (Tailwind v4's processor) folds a `backdrop-filter` +
+   `-webkit-backdrop-filter` pair in the SAME rule down to the prefixed
+   form alone — and Chromium does not implement `-webkit-backdrop-filter`,
+   so the blur silently vanished everywhere. Guarding the standard property
+   behind a feature query for itself stops the fold: the optimiser cannot
+   prove the block redundant. Do not merge these back into the rules above. */
+@supports (backdrop-filter: blur(1px)) {
+  .glass       { backdrop-filter: blur(18px) saturate(155%); }
+  .glass-panel { backdrop-filter: blur(26px) saturate(165%); }
+  .glass-light { backdrop-filter: blur(18px) saturate(180%); }
+  .glass-media { backdrop-filter: blur(20px) saturate(180%); }
+  .liquid-glass { backdrop-filter: blur(22px) saturate(190%); }
+}
+
+/* Any browser with the effect unavailable or disabled falls back to opaque
+   fills, otherwise translucent text loses its contrast floor. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-panel {
+    background: rgba(23, 38, 62, 0.92);
+  }
+  .glass-light,
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.97);
+  }
+}
+
 /* Section rhythm */
 .section-light {
   background: #F4F6FA;
   color: #0A1628;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Frosted panes need something behind them worth blurring. Flat #F4F6FA
+   would blur to exactly itself, so light sections get a faint colour wash
+   for the glass to pick up and smear. */
+.section-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 12% 8%,  rgba(107, 79, 187, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 45% at 88% 22%, rgba(13, 155, 138, 0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 55% at 60% 92%, rgba(201, 168, 76, 0.12) 0%, transparent 60%);
 }
 
 .section-dark {
   background: #0A1628;
   color: #F4F6FA;
+  position: relative;
+  isolation: isolate;
+}
+
+.section-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 45% at 15% 10%, rgba(107, 79, 187, 0.16) 0%, transparent 62%),
+    radial-gradient(ellipse 50% 40% at 85% 30%, rgba(13, 155, 138, 0.13) 0%, transparent 62%),
+    radial-gradient(ellipse 65% 50% at 55% 95%, rgba(201, 168, 76, 0.11) 0%, transparent 62%);
 }
 
 .section-navy-mid {
   background: #112240;
   color: #F4F6FA;
+  position: relative;
+  isolation: isolate;
+}
+
+.section-navy-mid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 0%, rgba(107, 79, 187, 0.14) 0%, transparent 62%),
+    radial-gradient(ellipse 55% 45% at 80% 100%, rgba(201, 168, 76, 0.10) 0%, transparent 62%);
 }
 
 /* Scrollbar */

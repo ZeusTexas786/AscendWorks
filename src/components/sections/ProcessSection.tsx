@@ -11,11 +11,11 @@ const steps = [
     title: "Assess",
     subtitle: "Discover What's Holding IT Back",
     description:
-      "We map your current-state architecture, identify capability gaps, and quantify the cost of inaction. Our assessment produces a board-ready business case in 2 weeks.",
-    deliverable: "IT Maturity Report + ROI Business Case",
+      "Review the current platform, workflows, stakeholders, dependencies, and capability gaps with your team.",
+    deliverable: "Current-state findings + priorities",
     color: "text-gold",
     borderColor: "border-gold/30",
-    bgColor: "bg-gold/5",
+    edge: "[--glass-edge:rgba(201,168,76,0.30)] [--glass-edge-hover:rgba(201,168,76,0.62)]",
   },
   {
     number: "02",
@@ -23,23 +23,23 @@ const steps = [
     title: "Architect",
     subtitle: "Design for Transformation, Not Just Today",
     description:
-      "Our enterprise architects design a platform blueprint that scales with you — integrations, governance model, data strategy, and a phased roadmap built around your constraints.",
-    deliverable: "Platform Blueprint + Phased Roadmap",
+      "Define platform patterns, integrations, governance, data responsibilities, and sequencing around your constraints.",
+    deliverable: "Architecture decisions + delivery plan",
     color: "text-purple",
     borderColor: "border-purple/30",
-    bgColor: "bg-purple/5",
+    edge: "[--glass-edge:rgba(107,79,187,0.30)] [--glass-edge-hover:rgba(107,79,187,0.62)]",
   },
   {
     number: "03",
     icon: Rocket,
     title: "Activate",
-    subtitle: "Deploy Fast. Land Right.",
+    subtitle: "Configure, validate, and prepare",
     description:
-      "Agile sprints, certified engineers, and a 6-week deployment model that doesn't sacrifice quality. Zero-downtime go-lives with full knowledge transfer to your team.",
-    deliverable: "Live Platform + Team Enablement",
+      "Deliver in reviewable increments, validate agreed requirements, and involve service owners in acceptance and handover.",
+    deliverable: "Validated configuration + team enablement",
     color: "text-teal",
     borderColor: "border-teal/30",
-    bgColor: "bg-teal/5",
+    edge: "[--glass-edge:rgba(13,155,138,0.30)] [--glass-edge-hover:rgba(13,155,138,0.62)]",
   },
   {
     number: "04",
@@ -47,11 +47,11 @@ const steps = [
     title: "Accelerate",
     subtitle: "Sustain the Gains",
     description:
-      "Post-go-live optimization, adoption programs, and continuous improvement cycles that compound value over time. We don't disappear at launch.",
-    deliverable: "KPI Dashboard + Optimization Cycles",
+      "Agree operational ownership, review adoption against your baseline, and prioritize the next round of platform improvement.",
+    deliverable: "Ownership model + improvement backlog",
     color: "text-gold",
     borderColor: "border-gold/30",
-    bgColor: "bg-gold/5",
+    edge: "[--glass-edge:rgba(201,168,76,0.30)] [--glass-edge-hover:rgba(201,168,76,0.62)]",
   },
 ];
 
@@ -76,8 +76,7 @@ export default function ProcessSection() {
             <span className="text-gold-gradient">Continuous Arc</span>
           </h2>
           <p className="text-slate text-base leading-relaxed">
-            Our methodology is built from 200+ enterprise deployments. Each phase
-            delivers standalone value — together they produce transformation.
+            Each phase ends with a decision and an artifact your team can review. Scope, timing, and success measures are agreed for your environment.
           </p>
         </motion.div>
 
@@ -90,7 +89,7 @@ export default function ProcessSection() {
                 initial={{ opacity: 0, y: 32 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.55, delay: i * 0.12, ease: "easeOut" }}
-                className={`relative flex flex-col p-6 rounded-2xl border ${step.borderColor} ${step.bgColor} group`}
+                className={`glass glass-hover relative flex flex-col p-6 rounded-2xl group ${step.edge}`}
               >
                 <span className={`font-display font-800 text-6xl ${step.color} opacity-20 absolute top-4 right-5 leading-none select-none`}>
                   {step.number}
@@ -107,7 +106,7 @@ export default function ProcessSection() {
                 </div>
                 {i < steps.length - 1 && (
                   <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-10">
-                    <div className="w-6 h-6 rounded-full bg-navy-mid border border-white/10 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-navy-mid/90 backdrop-blur-sm border border-white/20 flex items-center justify-center">
                       <span className="text-slate text-xs">→</span>
                     </div>
                   </div>

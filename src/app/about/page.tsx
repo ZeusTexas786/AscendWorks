@@ -161,7 +161,7 @@ export default function AboutPage() {
                     text: "We commit to reliable delivery, respectful collaboration, and measurable improvement.",
                   },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-3xl border border-navy-light bg-white p-6 shadow-[0_18px_40px_rgba(13,27,56,0.08)]">
+                  <div key={item.label} className="glass-light rounded-3xl p-6">
                     <h3 className="text-xl font-semibold text-navy">{item.label}</h3>
                     <p className="mt-3 text-slate-700 leading-7">{item.text}</p>
                   </div>

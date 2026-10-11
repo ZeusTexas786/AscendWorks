@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, CaretDown, List, X, Fire } from "@phosphor-icons/react";
+import { ArrowRight, CaretDown, List, X, Newspaper } from "@phosphor-icons/react";
 
 const services = [
-  { label: "ServiceNow Implementation", desc: "Full-lifecycle deployment in 6 weeks", href: "/services/servicenow" },
-  { label: "Agentic AI & Automation", desc: "AI-driven workflows that work without you", href: "/services/agentic-ai" },
+  { label: "AI Control Tower", desc: "Discover, govern, observe, and measure AI", href: "/solutions/ai-control-tower" },
+  { label: "ServiceNow Otto (Moveworks)", desc: "Employee search and service experiences", href: "/services/agentic-ai" },
+  { label: "Flow Designer & Integrations", desc: "Connect workflows across the enterprise", href: "/services/servicenow" },
+  { label: "Now Assist & AI Agents", desc: "Plan governed AI in platform workflows", href: "/services/agentic-ai" },
+  { label: "ServiceNow Implementation", desc: "End-to-end platform implementation", href: "/services/servicenow" },
   { label: "ITSM & Platform Optimization", desc: "Unlock the ROI already in your instance", href: "/services/itsm" },
-  { label: "Platform Architecture", desc: "Designed to scale with enterprise demands", href: "/services/architecture" },
-  { label: "Strategic IT Advisory", desc: "C-suite partnership for transformation", href: "/services/advisory" },
+  { label: "Architecture & Advisory", desc: "Platform strategy, governance, and design", href: "/services/architecture" },
   { label: "Talent & Staffing", desc: "Certified ServiceNow engineers on demand", href: "/services/staffing" },
 ];
 
@@ -24,7 +26,7 @@ const company = [
   { label: "About AscendWorksNow", href: "/about" },
   { label: "Leadership Team", href: "/about#team" },
   { label: "Case Studies", href: "/case-studies" },
-  { label: "Certifications & Partners", href: "/partners" },
+  { label: "Platform Ecosystem", href: "/partners" },
   { label: "Careers", href: "/careers", badge: "Hiring" },
   { label: "The Opportunity", href: "/careers/opportunity", badge: "Open" },
 ];
@@ -182,19 +184,14 @@ export default function Navbar() {
             Insights
           </Link>
 
-          {/* K26 Live Feed trigger */}
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent("k26:open"))}
-            className="flex items-center gap-2 px-3 py-2 rounded-xl border border-gold/30 bg-gold/8 text-gold hover:bg-gold/15 hover:border-gold/60 transition-all duration-200 text-sm font-600"
+          {/* ServiceNow product-intelligence feed */}
+          <Link
+            href="/insights"
+            className="flex items-center gap-2 rounded-lg border border-white/20 px-3 py-2 text-sm font-600 text-slate-light transition-colors hover:border-gold/50 hover:text-white"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-            </span>
-            <Fire size={13} weight="fill" className="text-red-400" />
-            K26 Live
-          </button>
+            <Newspaper size={15} weight="regular" aria-hidden="true" />
+            Platform updates
+          </Link>
         </div>
 
         {/* CTA */}
@@ -257,21 +254,14 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="border-t border-white/10 my-3" />
-          <button
-            type="button"
-            onClick={() => {
-              setMobileOpen(false);
-              window.dispatchEvent(new CustomEvent("k26:open"));
-            }}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl border border-gold/30 bg-gold/8 text-gold text-sm font-600"
+          <Link
+            href="/insights"
+            onClick={() => setMobileOpen(false)}
+            className="flex min-h-11 items-center gap-2.5 rounded-lg border border-white/20 px-3 py-2 text-sm font-600 text-slate-light"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-            </span>
-            <Fire size={13} weight="fill" className="text-red-400" />
-            K26 Live Feed — ServiceNow Intelligence
-          </button>
+            <Newspaper size={15} weight="regular" aria-hidden="true" />
+            ServiceNow platform updates
+          </Link>
           <div className="border-t border-white/10 my-4" />
           <Link
             href="/contact"

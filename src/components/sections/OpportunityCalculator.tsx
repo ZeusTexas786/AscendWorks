@@ -53,7 +53,7 @@ export default function OpportunityCalculator() {
   const passiveW = Math.round((s.passive / (326_400 + 324_000)) * 100);
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-navy-light p-8 lg:p-10 shadow-[0_20px_80px_rgba(9,15,82,0.4)]">
+    <div className="glass-panel rounded-3xl p-8 lg:p-10">
       {/* Scenario tabs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
         {scenarios.map((sc, i) => (
@@ -75,7 +75,7 @@ export default function OpportunityCalculator() {
 
       {/* Income cards */}
       <div className="grid md:grid-cols-3 gap-5 mb-7">
-        <div className="rounded-2xl border border-white/8 bg-white/4 p-5">
+        <div className="glass-inset rounded-2xl p-5">
           <p className="text-slate text-[11px] uppercase tracking-widest mb-2">Active Income</p>
           <AnimatePresence mode="wait">
             <motion.p key={`a-${sel}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22 }} className="font-display font-800 text-3xl text-gold">
@@ -85,7 +85,7 @@ export default function OpportunityCalculator() {
           <p className="text-slate text-xs mt-1">Your direct project billing</p>
         </div>
 
-        <div className="rounded-2xl border border-white/8 bg-white/4 p-5">
+        <div className="glass-inset rounded-2xl p-5">
           <p className="text-slate text-[11px] uppercase tracking-widest mb-2">Passive Income</p>
           <AnimatePresence mode="wait">
             <motion.p key={`p-${sel}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.22 }} className={`font-display font-800 text-3xl ${s.passive > 0 ? "text-teal" : "text-slate/40"}`}>

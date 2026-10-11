@@ -250,7 +250,7 @@ function ConfidentialSection() {
               { Icon: ShieldCheck, title: "Zero Third-Party Sharing", body: "Your information is never shared with clients, partners, or any external party at any stage of the process." },
               { Icon: Envelope, title: "Encrypted, Private Communication", body: "All application data is handled through secure channels. You control how and when we communicate." },
             ].map(({ Icon, title, body }) => (
-              <div key={title} className="rounded-2xl border border-white/10 bg-white/5 p-6 text-left">
+              <div key={title} className="glass rounded-2xl p-6 text-left">
                 <Icon size={22} className="text-gold mb-3" weight="duotone" />
                 <h4 className="font-display font-700 text-white text-sm mb-2">{title}</h4>
                 <p className="text-slate text-xs leading-relaxed">{body}</p>
@@ -371,7 +371,7 @@ export default function OpportunityContent() {
                     { label: "Avg. CSA holder salary", value: "$125K+", color: "text-white" },
                     { label: "Charter seats remaining", value: "25", color: "text-gold" },
                   ].map(({ label, value, color }) => (
-                    <div key={label} className="flex items-center justify-between rounded-xl border border-white/8 bg-white/4 px-5 py-3">
+                    <div key={label} className="glass-inset flex items-center justify-between rounded-xl px-5 py-3">
                       <span className="text-slate text-sm">{label}</span>
                       <span className={`font-display font-800 text-xl ${color}`}>{value}</span>
                     </div>

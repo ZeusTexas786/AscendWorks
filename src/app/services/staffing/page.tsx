@@ -20,13 +20,13 @@ const data: ServicePageData = {
 
   problemHeading: "The Wrong Resource at the Right Rate Is Still the Wrong Decision.",
   problemBody:
-    "We've seen what happens when organizations compromise on certification level or experience depth to fill a role faster. The rework from a misplaced architect costs more than the placement premium would have — and it shows up six weeks into your timeline when there's no budget left to fix it.",
+    "We've seen what happens when organizations compromise on role fit to fill a position quickly. Misaligned experience can create rework later in delivery, when teams have less room to adjust.",
   painPoints: [
     {
       iconName: "Clock",
       title: "Transformation programs blocked on headcount",
       description:
-        "A ServiceNow implementation without the right architect doesn't slow down — it fails expensively. Hiring cycles of three to six months are not compatible with six-week deployment commitments.",
+        "A ServiceNow implementation without the right architect can create avoidable rework. Staffing plans should reflect the role, delivery schedule, and technical context.",
     },
     {
       iconName: "MagnifyingGlass",

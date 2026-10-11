@@ -212,7 +212,7 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
                 const Icon = iconMap[point.iconName];
                 return (
                   <FadeIn key={point.title} delay={i * 0.1}>
-                    <div className="flex flex-col p-6 rounded-2xl border border-navy/10 bg-white hover:border-gold/30 hover:shadow-lg transition-all h-full">
+                    <div className="glass-light glass-light-hover flex flex-col p-6 rounded-2xl h-full">
                       <div className="w-11 h-11 rounded-xl bg-navy/5 flex items-center justify-center mb-5">
                         {Icon && <Icon size={22} weight="duotone" className="text-navy/50" />}
                       </div>

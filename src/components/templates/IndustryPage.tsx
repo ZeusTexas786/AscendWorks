@@ -178,7 +178,7 @@ export default function IndustryPage({ data }: { data: IndustryPageData }) {
                 const c = colorTokens[stat.color];
                 return (
                   <FadeIn key={stat.label} delay={i * 0.1}>
-                    <div className="flex flex-col p-6 rounded-2xl border border-navy/10 bg-white hover:shadow-xl transition-all h-full">
+                    <div className="glass-light glass-light-hover flex flex-col p-6 rounded-2xl h-full">
                       <div className={`font-display font-800 text-4xl md:text-5xl ${c.text} leading-none mb-2`}>
                         {stat.value}
                       </div>
@@ -221,7 +221,7 @@ export default function IndustryPage({ data }: { data: IndustryPageData }) {
                 const sev = severityTokens[ch.severity];
                 return (
                   <FadeIn key={ch.title} delay={i * 0.1}>
-                    <div className="flex flex-col p-6 rounded-2xl border border-white/8 bg-navy-light h-full">
+                    <div className="glass flex flex-col p-6 rounded-2xl h-full">
                       {/* Header row */}
                       <div className="flex items-start justify-between mb-5 gap-3">
                         <div className="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center shrink-0">
@@ -275,7 +275,7 @@ export default function IndustryPage({ data }: { data: IndustryPageData }) {
                 const mc = colorTokens[row.moduleColor];
                 return (
                   <FadeIn key={row.challenge} delay={i * 0.08}>
-                    <div className="grid md:grid-cols-3 gap-4 p-5 rounded-2xl border border-navy/10 bg-white hover:border-gold/20 hover:shadow-md transition-all items-center">
+                    <div className="glass-light glass-light-hover grid md:grid-cols-3 gap-4 p-5 rounded-2xl items-center">
                       <div className="flex items-center gap-3">
                         <div className="w-2 h-2 rounded-full bg-navy/25 shrink-0" />
                         <span className="text-navy font-600 text-sm">{row.challenge}</span>

@@ -6,7 +6,7 @@ import InsightsPageContent from "@/components/sections/InsightsPageContent";
 export const metadata: Metadata = {
   title: "Insights | AscendWorksNow",
   description:
-    "Expert perspectives on ServiceNow Workplace Service Delivery, enterprise infrastructure supply chain strategy, and VMware + ServiceNow workflow automation.",
+    "Product notes and implementation context for ServiceNow AI Control Tower, Otto and Moveworks, Flow Designer, Now Assist, and enterprise workflows.",
 };
 
 export default function InsightsPage() {

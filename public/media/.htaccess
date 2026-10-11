@@ -1,0 +1,23 @@
+# Scoped policy for the AI Control Tower film bundle.
+#
+# NOTE FOR FUTURE MAINTAINERS: do NOT scope this with <Location>/<LocationMatch>
+# in a .htaccess file. Those are server-config/virtual-host directives, and
+# Apache returns HTTP 500 for the ENTIRE site if they appear here. A child
+# .htaccess is merged AFTER the parent, so the headers below override the
+# site-wide ones — and because the scope is the filesystem rather than URL
+# text, no encoded-path or traversal trick can escape it.
+#
+# The film compiles its own JSX at runtime (Babel.transformScriptTags) and
+# unpacks fonts/scripts into blob: URLs, which needs 'unsafe-eval' and blob:.
+# It is first-party, self-contained, and makes no outbound requests.
+
+<IfModule mod_headers.c>
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; font-src 'self' blob: data:; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: data:; frame-ancestors 'self'; base-uri 'self'; form-action 'none'"
+
+  # Embedded in a same-origin iframe, so it must not inherit the site-wide DENY.
+  <FilesMatch "\.html$">
+    Header always set X-Frame-Options "SAMEORIGIN"
+    # Large immutable bundle — exempt from the site-wide HTML no-store rule.
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>

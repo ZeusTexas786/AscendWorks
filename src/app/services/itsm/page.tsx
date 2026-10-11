@@ -4,23 +4,23 @@ import ServicePage, { type ServicePageData } from "@/components/templates/Servic
 export const metadata: Metadata = {
   title: "ITSM & Platform Optimization | AscendWorksNow",
   description:
-    "Already on ServiceNow but not seeing the ROI? We audit, optimize, and unlock the capabilities your team paid for but never activated.",
+    "Improve an existing ServiceNow environment through a focused review of workflows, adoption, CMDB quality, configuration, and platform health.",
 };
 
 const data: ServicePageData = {
   category: "ITSM & Platform Optimization",
-  headline: "You're Not Getting What\nYou Paid For. We'll Fix That.",
+  headline: "Make your ServiceNow investment work harder.",
   subheadline:
-    "Most ServiceNow environments are running at a fraction of their licensed capability — not because the platform is limited, but because nobody's unlocked it. We've done this audit enough times to know exactly where the value is sitting.",
+    "Review an existing ServiceNow environment with the people who run it. Identify friction across workflows, adoption, CMDB quality, and configuration, then prioritize improvements around your operational goals.",
   heroStats: [
-    { value: "40%", label: "Avg. MTTR reduction" },
-    { value: "3×", label: "User adoption lift" },
-    { value: "2 wks", label: "First sprint, first results" },
+    { value: "Workflows", label: "Review service operations" },
+    { value: "Adoption", label: "Understand the user experience" },
+    { value: "Platform health", label: "Prioritize sustainable changes" },
   ],
 
-  problemHeading: "Two Years In. Twenty Percent Utilized.",
+  problemHeading: "A platform needs attention after go-live.",
   problemBody:
-    "In our first conversation, we'll ask you about five capabilities inside your ServiceNow environment. Most IT leaders can name two. That gap — between what you're licensed for and what you're running — is where your budget is going unrecovered every quarter.",
+    "Configuration, integrations, user needs, and business priorities change over time. A structured review helps identify where workflows need attention and which platform changes deserve to come first.",
   painPoints: [
     {
       iconName: "CurrencyDollar",
@@ -32,25 +32,25 @@ const data: ServicePageData = {
       iconName: "ChartLineDown",
       title: "Incident volumes that won't come down",
       description:
-        "If your MTTR hasn't moved in 12 months, the workflows haven't been optimized. Automation rules that aren't configured, routing logic that was 'good enough' at launch — these are fixable. They just haven't been.",
+        "Review routing, prioritization, knowledge, and automation against the service experience teams need today.",
     },
     {
       iconName: "UsersThree",
       title: "Adoption that stalled after go-live",
       description:
-        "User adoption doesn't happen automatically. When the training ends and the consultants leave, usage drops. If your portal utilization is under 60%, there's a change management problem sitting underneath a technology problem.",
+        "Understand where employees encounter friction in the portal, request flows, knowledge, and support experience.",
     },
   ],
 
   capabilitiesHeading: "We Go Deep Where It Matters.",
   capabilitiesBody:
-    "Platform optimization isn't a single engagement — it's a methodology. We audit, prioritize, and improve in structured sprints so you see results at week two, not month twelve.",
+    "Review the platform with your service owners, agree priorities, and deliver changes in increments that can be validated against your needs.",
   capabilities: [
     {
       iconName: "MagnifyingGlass",
       title: "Platform Health Audit",
       description:
-        "A comprehensive assessment of your current configuration: what's active, what's dormant, what's misconfigured, and what's costing you performance. You'll have a ranked remediation list by day five.",
+        "Review configuration, workflows, data quality, integrations, and platform health to identify areas for investigation and improvement.",
       borderColor: "border-teal/20",
       bgColor: "bg-teal/5",
       iconBg: "bg-teal/10",
@@ -83,7 +83,7 @@ const data: ServicePageData = {
       iconName: "Users",
       title: "Adoption & Utilization Programs",
       description:
-        "Structured enablement programs — role-based, tied to real workflows — that move your utilization numbers. Not training for the sake of training. Training that changes behavior.",
+        "Shape enablement around roles and real workflows, and gather feedback from the people who use the platform.",
       borderColor: "border-teal/20",
       bgColor: "bg-teal/5",
       iconBg: "bg-teal/10",
@@ -116,14 +116,14 @@ const data: ServicePageData = {
 
   processHeading: "Audit. Prioritize. Optimize. Repeat.",
   processBody:
-    "We don't drop a 200-page assessment and leave. Every phase produces something operational — something your team can act on before we start the next one.",
+    "Each phase produces a reviewable decision or work item. Priorities and timing are agreed with your team based on the platform and scope.",
   processSteps: [
     {
       number: "01",
       title: "Audit",
-      subtitle: "Week 1: Full platform assessment",
+      subtitle: "Current-state review",
       description:
-        "Configuration review, workflow analysis, utilization data, user feedback — everything we need to build a prioritized improvement backlog in five business days.",
+        "Review configuration, workflows, available utilization information, user feedback, and operational dependencies.",
       deliverable: "Prioritized optimization backlog + quick-win list",
       color: "text-teal",
       borderColor: "border-teal/30",
@@ -132,7 +132,7 @@ const data: ServicePageData = {
     {
       number: "02",
       title: "Prioritize",
-      subtitle: "Week 1–2: Business case, sequencing",
+      subtitle: "Priorities and sequencing",
       description:
         "We rank improvements by impact and effort, align them to your top operational metrics, and build a roadmap your leadership team can approve — with cost and ROI projections for each item.",
       deliverable: "Optimization roadmap with ROI estimates",
@@ -143,9 +143,9 @@ const data: ServicePageData = {
     {
       number: "03",
       title: "Optimize",
-      subtitle: "Weeks 2–8: Two-week sprint cycles",
+      subtitle: "Incremental, reviewable changes",
       description:
-        "We execute in two-week sprints, demo results at each checkpoint, and measure against your KPIs in real time. If a sprint doesn't move the needle, we adjust before the next one starts.",
+        "Deliver agreed improvements in reviewable increments, demonstrate changes, and evaluate them against the acceptance criteria.",
       deliverable: "Improved workflows, updated dashboards, KPI movement",
       color: "text-purple",
       borderColor: "border-purple/30",
@@ -154,7 +154,7 @@ const data: ServicePageData = {
     {
       number: "04",
       title: "Sustain",
-      subtitle: "Month 3+: Ongoing improvement cycles",
+      subtitle: "Ongoing platform ownership",
       description:
         "The engagement doesn't end at eight weeks. We transition to monthly optimization reviews — keeping the platform current with your business, not frozen at its last major update.",
       deliverable: "Monthly KPI report + next-cycle improvements",
@@ -164,14 +164,14 @@ const data: ServicePageData = {
     },
   ],
 
-  outcomeHeading: "What Changes in 90 Days.",
+  outcomeHeading: "Measure against your own baseline.",
   outcomeBody:
-    "Every metric below is a 90-day average from active optimization engagements — not projections, and not cherry-picked outliers.",
+    "Agree on measures that reflect your environment and priorities before work begins. Review changes with the teams responsible for operating the platform.",
   outcomeStats: [
-    { value: "40%", label: "Average MTTR reduction", color: "text-teal" },
-    { value: "3×", label: "User adoption lift", color: "text-gold" },
-    { value: "65%", label: "Avg. portal utilization increase", color: "text-purple" },
-    { value: "2 wks", label: "First measurable results", color: "text-teal" },
+    { value: "Baseline", label: "Current-state measures", color: "text-teal" },
+    { value: "Workflow", label: "Service experience", color: "text-gold" },
+    { value: "Adoption", label: "User feedback and use", color: "text-purple" },
+    { value: "Ownership", label: "Ongoing responsibilities", color: "text-teal" },
   ],
 };
 

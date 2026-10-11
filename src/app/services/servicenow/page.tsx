@@ -4,53 +4,77 @@ import ServicePage, { type ServicePageData } from "@/components/templates/Servic
 export const metadata: Metadata = {
   title: "ServiceNow Implementation | AscendWorksNow",
   description:
-    "Full-lifecycle ServiceNow deployments in 6 weeks. Certified architects, zero-scope-creep methodology, and 90 days of post-go-live optimization included.",
+    "Plan and deliver ServiceNow capabilities around your processes, architecture, integrations, governance, and operating model.",
 };
 
 const data: ServicePageData = {
-  category: "ServiceNow Implementation",
-  headline: "Implementation That Sticks.\nROI That Shows Up.",
+  category: "ServiceNow implementation",
+  headline: "Build the platform around the work.",
   subheadline:
-    "Most ServiceNow projects go live and then stall. Ours don't. We've built a deployment methodology from 200+ enterprise engagements that gets you live in six weeks — and keeps the platform earning long after launch.",
+    "Plan a ServiceNow implementation around your operating model, technical estate, and goals. From workflow design and configuration to testing, enablement, and ownership, the scope and timeline are shaped with your team.",
   heroStats: [
-    { value: "6 wks", label: "Average time to go-live" },
-    { value: "200+", label: "Deployments completed" },
-    { value: "30%", label: "Avg. under-budget delivery" },
+    { value: "ITSM · ITOM", label: "Core operations" },
+    { value: "Flow Designer", label: "Workflow automation" },
+    { value: "AI Control Tower", label: "AI governance" },
   ],
-
-  problemHeading: "The Platform Isn't the Problem. The Approach Is.",
+  problemHeading: "A platform is only as useful as the work it supports.",
   problemBody:
-    "The average ServiceNow implementation runs over budget, behind schedule, and at 40% utilization within a year. We've audited enough of them to know exactly why — and none of those reasons have anything to do with the technology.",
+    "Implementations become difficult to sustain when process design, data, integrations, and platform ownership are treated as separate conversations. Start with the service experience and constraints your teams need to support.",
   painPoints: [
     {
       iconName: "Clock",
-      title: "Discovery that drags into deployment",
-      description:
-        "Vague requirements at the start become rework at the end. Most engagements spend months in 'analysis' before a line of configuration is written. That's not rigor — it's risk.",
+      title: "Scope before configuration",
+      description: "Align on users, workflows, dependencies, and acceptance criteria before committing to build decisions.",
     },
     {
       iconName: "Target",
-      title: "Go-live metrics that miss the point",
-      description:
-        "A system that's technically live but not adopted isn't a success. Ticket volume, MTTR, and user satisfaction are the metrics that matter — not whether the portal loads.",
+      title: "A platform designed to evolve",
+      description: "Prefer maintainable patterns and a clear governance model over short-term customization that complicates upgrades.",
     },
     {
       iconName: "UsersThree",
-      title: "Knowledge transfer that never actually transfers",
-      description:
-        "When the implementation partner walks out, your team should own the platform — not just have access to it. Most don't. That dependency is expensive.",
+      title: "Ownership beyond launch",
+      description: "Include administrators, service owners, and support teams in design, testing, documentation, and handover.",
     },
   ],
-
-  capabilitiesHeading: "Every Module. Every Integration. One Accountable Team.",
+  capabilitiesHeading: "Implementation across the Now Platform.",
   capabilitiesBody:
-    "We don't hand off and disappear. Our architects stay with the engagement through go-live, adoption, and the first 90 days of optimization — because that's when the real work happens.",
+    "We shape the work to your licensed products and environment. Product availability and implementation scope are confirmed during discovery.",
   capabilities: [
     {
       iconName: "Gear",
-      title: "ITSM, ITOM & HRSD",
-      description:
-        "Core module deployments executed by architects who've done each one dozens of times. No generalists. No learning on your dime.",
+      title: "ITSM, ITOM & CMDB",
+      description: "Design service operations, configuration data, and workflows around the way teams detect, prioritize, and resolve work.",
+      borderColor: "border-gold/20",
+      bgColor: "bg-gold/5",
+      iconBg: "bg-gold/10",
+      iconColor: "text-gold",
+      textColor: "text-gold",
+    },
+    {
+      iconName: "UsersThree",
+      title: "HRSD & employee services",
+      description: "Map employee journeys, request experiences, knowledge, and service ownership across teams.",
+      borderColor: "border-teal/20",
+      bgColor: "bg-teal/5",
+      iconBg: "bg-teal/10",
+      iconColor: "text-teal",
+      textColor: "text-teal",
+    },
+    {
+      iconName: "Handshake",
+      title: "CSM & service experiences",
+      description: "Connect customer-facing service workflows to the teams and information needed to resolve requests.",
+      borderColor: "border-purple/20",
+      bgColor: "bg-purple/5",
+      iconBg: "bg-purple/10",
+      iconColor: "text-purple",
+      textColor: "text-purple",
+    },
+    {
+      iconName: "ShieldCheck",
+      title: "SecOps & risk workflows",
+      description: "Coordinate response, approvals, and evidence with clear roles and controls for your operating context.",
       borderColor: "border-gold/20",
       bgColor: "bg-gold/5",
       iconBg: "bg-gold/10",
@@ -59,9 +83,8 @@ const data: ServicePageData = {
     },
     {
       iconName: "ArrowsCounterClockwise",
-      title: "CSM, SecOps & Field Service",
-      description:
-        "Complex modules that most partners treat as afterthoughts. We treat them as primary workstreams with dedicated certification depth.",
+      title: "Flow Designer & integrations",
+      description: "Automate repeatable work and connect systems with explicit ownership, error handling, and support paths.",
       borderColor: "border-teal/20",
       bgColor: "bg-teal/5",
       iconBg: "bg-teal/10",
@@ -69,43 +92,9 @@ const data: ServicePageData = {
       textColor: "text-teal",
     },
     {
-      iconName: "Wrench",
-      title: "Integration Architecture",
-      description:
-        "MID server configuration, REST/SOAP integrations, and third-party connectors built to your security and governance standards — not ours.",
-      borderColor: "border-purple/20",
-      bgColor: "bg-purple/5",
-      iconBg: "bg-purple/10",
-      iconColor: "text-purple",
-      textColor: "text-purple",
-    },
-    {
-      iconName: "Handshake",
-      title: "Change Management & Adoption",
-      description:
-        "Platform success is 40% configuration and 60% people. We run change programs alongside technical delivery because utilization is the real metric.",
-      borderColor: "border-gold/20",
-      bgColor: "bg-gold/5",
-      iconBg: "bg-gold/10",
-      iconColor: "text-gold",
-      textColor: "text-gold",
-    },
-    {
-      iconName: "ChartBar",
-      title: "Reporting & Performance Dashboards",
-      description:
-        "Board-ready dashboards built from day one — so the ROI conversation happens at month three, not month eighteen.",
-      borderColor: "border-teal/20",
-      bgColor: "bg-teal/5",
-      iconBg: "bg-teal/10",
-      iconColor: "text-teal",
-      textColor: "text-teal",
-    },
-    {
-      iconName: "Rocket",
-      title: "90-Day Post-Go-Live Optimization",
-      description:
-        "Included in every engagement. We track adoption metrics, tune performance, and run optimization sprints for three months after you launch. No additional statement of work.",
+      iconName: "Brain",
+      title: "Now Assist & AI capabilities",
+      description: "Assess use cases, data and access requirements, human oversight, and readiness before enabling AI-supported workflows.",
       borderColor: "border-purple/20",
       bgColor: "bg-purple/5",
       iconBg: "bg-purple/10",
@@ -113,65 +102,59 @@ const data: ServicePageData = {
       textColor: "text-purple",
     },
   ],
-
-  processHeading: "Six Weeks Is Not a Slogan.",
+  processHeading: "A delivery plan built around your constraints.",
   processBody:
-    "It's a commitment backed by a structured methodology, a dedicated project team, and a contract clause that holds us to it. Here's exactly how we spend those six weeks.",
+    "The engagement sequence is agreed with your stakeholders. Each stage has a clear decision point, named owner, and output for the next stage.",
   processSteps: [
     {
       number: "01",
       title: "Discover",
-      subtitle: "Weeks 1–2: Requirements, architecture, business case",
-      description:
-        "We interview your stakeholders, audit your existing environment, and finalize the scope in writing. Nothing moves to configuration until alignment is documented.",
-      deliverable: "Signed scope document + architecture blueprint",
+      subtitle: "Processes, people, and platform context",
+      description: "Review objectives, current-state workflows, licensed capabilities, data, integrations, and delivery constraints.",
+      deliverable: "Prioritized scope and open decisions",
       color: "text-gold",
       borderColor: "border-gold/30",
       bgColor: "bg-gold/5",
     },
     {
       number: "02",
-      title: "Configure",
-      subtitle: "Weeks 2–4: Agile sprints, daily standups",
-      description:
-        "Configuration happens in two-day sprint cycles with live demos at each checkpoint. You see progress every 48 hours — not at the end of the month.",
-      deliverable: "Working environment, integration-tested",
+      title: "Design",
+      subtitle: "Architecture and service experience",
+      description: "Agree target workflows, platform patterns, roles, integration approach, and acceptance criteria before implementation.",
+      deliverable: "Solution design and delivery plan",
       color: "text-purple",
       borderColor: "border-purple/30",
       bgColor: "bg-purple/5",
     },
     {
       number: "03",
-      title: "Deploy",
-      subtitle: "Weeks 5–6: UAT, training, go-live",
-      description:
-        "User acceptance testing with your team, role-based training, and a zero-downtime cutover. Your team goes live informed — not surprised.",
-      deliverable: "Live platform + trained users",
+      title: "Configure & validate",
+      subtitle: "Build, test, and prepare for adoption",
+      description: "Deliver in reviewable increments, validate integrations and access, and involve service owners in acceptance testing.",
+      deliverable: "Reviewed configuration and test evidence",
       color: "text-teal",
       borderColor: "border-teal/30",
       bgColor: "bg-teal/5",
     },
     {
       number: "04",
-      title: "Optimize",
-      subtitle: "Days 7–90: Adoption, tuning, ROI tracking",
-      description:
-        "We stay. We track adoption metrics weekly, run optimization sprints monthly, and deliver a 90-day ROI report to your leadership team.",
-      deliverable: "ROI report + optimization roadmap",
+      title: "Launch & own",
+      subtitle: "Operational readiness and handover",
+      description: "Prepare support teams, document platform decisions, and agree how adoption, issues, and future changes will be managed.",
+      deliverable: "Operational handover and next-step roadmap",
       color: "text-gold",
       borderColor: "border-gold/30",
       bgColor: "bg-gold/5",
     },
   ],
-
-  outcomeHeading: "What Our Clients Report After 90 Days.",
+  outcomeHeading: "A clear basis for evaluating the work.",
   outcomeBody:
-    "These aren't projections. They're the averages from client outcome reports filed 90 days post-go-live across our last 50 engagements.",
+    "Define the intended measures with your stakeholders before delivery. Review progress against those agreed criteria, platform acceptance, and the operating team's readiness.",
   outcomeStats: [
-    { value: "6 wks", label: "Average go-live timeline", color: "text-gold" },
-    { value: "40%", label: "Average MTTR reduction", color: "text-teal" },
-    { value: "98%", label: "Client retention rate", color: "text-gold" },
-    { value: "30%", label: "Under-budget delivery avg.", color: "text-purple" },
+    { value: "Scoped", label: "Priorities and boundaries", color: "text-gold" },
+    { value: "Tested", label: "Acceptance and readiness", color: "text-teal" },
+    { value: "Owned", label: "Operational handover", color: "text-purple" },
+    { value: "Measured", label: "Agreed outcome criteria", color: "text-gold" },
   ],
 };
 

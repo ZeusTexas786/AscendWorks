@@ -1,19 +1,37 @@
 Options -Indexes
 DirectoryIndex index.html
 
-# ── HTTPS redirect ────────────────────────────────────────────
+# ── HTTPS + canonical host ────────────────────────────────────
+# Redirect to a LITERAL host, never to %{HTTP_HOST}. The Host header is
+# client-supplied, so echoing it back into a Location makes this a redirector
+# for whatever the caller sends. Pinning it also collapses apex -> www.
 RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\.ascendworksnow\.com$ [NC]
+RewriteRule ^ https://www.ascendworksnow.com%{REQUEST_URI} [L,R=301]
 
 RewriteBase /
 
-# Serve existing files/dirs directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# This is a pre-rendered static export (Next.js `output: "export"` with
+# trailingSlash), NOT a single-page app — every route is a real directory
+# containing index.html. Serve those directly and let genuinely unknown URLs
+# fall through to a real 404, rather than rewriting everything to the homepage.
 
-# Route all other requests to index.html
-RewriteRule ^(.*)$ /index.html [L,QSA]
+# Existing files and directories are served as-is (this is also what lets
+# /contact.php execute rather than being rewritten)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# /some/route → /some/route/index.html when that file exists
+RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+RewriteRule ^(.*?)/?$ /$1/index.html [L,QSA]
+
+# Anything left is a real 404
+ErrorDocument 404 /404.html
+
+# Never serve the contact form's rate-limit state
+RedirectMatch 404 ^/\.state(/|$)
 
 # ── Security headers ──────────────────────────────────────────
 <IfModule mod_headers.c>
@@ -33,30 +51,59 @@ RewriteRule ^(.*)$ /index.html [L,QSA]
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
 
   # Content Security Policy
-  # unsafe-inline required for Framer Motion inline styles + Tailwind CSS v4
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://images.unsplash.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+  #
+  # style-src 'unsafe-inline': Framer Motion inline styles + Tailwind v4.
+  # script-src 'unsafe-inline': Next's static export inlines its RSC bootstrap
+  #   chunks. A static export cannot use nonces (there is no server to mint
+  #   them) and hashes churn on every build. Acceptable here because the site
+  #   has no user-generated content and no reflected input, so there is no
+  #   HTML-injection sink for it to upgrade into script execution.
+  # No Google Fonts allowance: next/font self-hosts the woff2 files at build
+  #   time, so the browser never contacts fonts.googleapis.com or gstatic.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://images.unsplash.com; object-src 'none'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
 
   # Remove server fingerprinting headers
   Header always unset X-Powered-By
   Header always unset Server
 </IfModule>
 
+# NOTE: the animated briefing at /media/ needs a RELAXED policy ('unsafe-eval'
+# and blob:). That override lives in public/media/.htaccess, NOT here.
+# Do NOT use <Location>/<LocationMatch> to scope it — those directives are
+# server-config/virtual-host only, and Apache returns HTTP 500 for the ENTIRE
+# site if they appear in a .htaccess file.
+
 # ── Cache control ─────────────────────────────────────────────
 <IfModule mod_expires.c>
   ExpiresActive On
-  # Hashed static assets (JS/CSS bundles) — cache 1 year
   <FilesMatch "\.(js|css|woff2|woff|ttf)$">
     ExpiresDefault "access plus 1 year"
-    Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
-  # Images
   <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico)$">
     ExpiresDefault "access plus 30 days"
-    Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
-  # HTML — never cache (always fresh)
   <FilesMatch "\.html$">
     ExpiresDefault "access plus 0 seconds"
+  </FilesMatch>
+  <FilesMatch "\.(mp3|mp4|webm|ogg|m4a)$">
+    ExpiresDefault "access plus 30 days"
+  </FilesMatch>
+</IfModule>
+
+# Cache-Control is a mod_headers directive, so it gets its own guard. Nested
+# inside the mod_expires block above it would vanish silently on any host
+# without mod_expires — taking the HTML no-store rule with it.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2|woff|ttf)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.html$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(mp3|mp4|webm|ogg|m4a)$">
+    Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
 </IfModule>

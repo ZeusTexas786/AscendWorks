@@ -27,26 +27,6 @@ const industries = [
     tag: "FinServ",
   },
   {
-    title: "Manufacturing & Operations",
-    description:
-      "Field service management, asset lifecycle automation, and OT/IT integration for facilities running 24/7.",
-    stat: "40% OEE improvement avg.",
-    href: "/industries/manufacturing",
-    gradient: "from-purple/15 to-transparent",
-    border: "border-purple/20 hover:border-purple/50",
-    tag: "Manufacturing",
-  },
-  {
-    title: "Government & Public Sector",
-    description:
-      "FedRAMP-ready deployments and ATO support for agencies modernizing citizen services and enterprise IT operations.",
-    stat: "FedRAMP + ATO support",
-    href: "/industries/government",
-    gradient: "from-teal/15 to-transparent",
-    border: "border-teal/20 hover:border-teal/50",
-    tag: "Government",
-  },
-  {
     title: "Energy & Utilities",
     description:
       "Asset management, work order automation, and emergency response workflows for regulated energy providers.",

@@ -20,6 +20,8 @@
 //   staffing     → Talent, certifications, hiring market
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { GENERATED_ITEMS } from "./knowledge26.generated";
+
 export type KnowledgeCategory =
   | "knowledge26"
   | "agentic-ai"
@@ -74,7 +76,7 @@ export const CATEGORIES: Record<
   KnowledgeCategory,
   { label: string; color: string; bg: string; description: string }
 > = {
-  "knowledge26":  { label: "Knowledge26",  color: "#C9A84C", bg: "#C9A84C18", description: "Conference sessions, announcements & highlights" },
+  "knowledge26":  { label: "Conference archive", color: "#C9A84C", bg: "#C9A84C18", description: "Archived conference coverage" },
   "agentic-ai":   { label: "Agentic AI",   color: "#8B5CF6", bg: "#8B5CF618", description: "Now Assist, AI Agents, autonomous workflows" },
   "itsm":         { label: "ITSM",         color: "#0D9B8A", bg: "#0D9B8A18", description: "Incident, Change, CMDB, AIOps" },
   "wsd":          { label: "WSD",          color: "#E87B45", bg: "#E87B4518", description: "Workplace Service Delivery & facilities" },
@@ -95,7 +97,7 @@ export const TYPE_LABELS: Record<ContentType, string> = {
 
 // ─── Knowledge feed ───────────────────────────────────────────────────────────
 
-export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
+const CURATED_ITEMS: KnowledgeItem[] = [
   // ── Knowledge26 Conference ──────────────────────────────────────────────────
   {
     id: "k26-opens-las-vegas",
@@ -772,6 +774,32 @@ export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
     crmTag: "advisory-opportunity",
   },
 ];
+
+// ─── Feed assembly ────────────────────────────────────────────────────────────
+// Hand-curated items above, agent-published items from the generated file.
+// Newest first so the homepage and widget surface fresh material automatically.
+
+export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
+  ...CURATED_ITEMS,
+  ...GENERATED_ITEMS,
+].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+
+/**
+ * Canonical link for a feed item. Items with a hand-built page use `pageSlug`;
+ * everything else gets a generated detail page keyed on `id`.
+ */
+export function getItemHref(item: KnowledgeItem): string {
+  return `/insights/${item.pageSlug ?? item.id}`;
+}
+
+/** Items that need a generated detail page (those with a hand-built page are excluded). */
+export function getGeneratedPageItems(): KnowledgeItem[] {
+  return KNOWLEDGE_ITEMS.filter((i) => !i.pageSlug);
+}
+
+export function getItemById(id: string): KnowledgeItem | undefined {
+  return KNOWLEDGE_ITEMS.find((i) => i.id === id);
+}
 
 // ─── Derived helpers ──────────────────────────────────────────────────────────
 
